@@ -18,13 +18,52 @@ namespace simulacionBolillero
         }
         public int IndiceAlAzar()
         {
-            BollillasAdentro = (byte)r.Next(1, this.BollillasAfuera.Count + 1);
+            return r.Next(1, this.BollillasAdentro.Count);
         }
 
         public byte SacarBolilla()
         {
-            BollillasAdentro.ForEach(
+            byte bolilla = BollillasAdentro[IndiceAlAzar()];
+            sacarBolilla(bolilla);
+            return bolilla;
+        }
+        
+        public void sacarBolilla(byte bolilla)
+        {
+            BollillasAdentro.Remove(SacarBolilla());
+            BollillasAfuera.Add(SacarBolilla());
         }
 
+        public void ReingresarBolilla()
+        {
+            BollillasAdentro.AddRange(BollillasAfuera);
+        }
+
+        public bool jugar(List<byte> jugada)
+        {
+            for (byte i=0; i<jugada.Count; i++)
+            {
+                if(jugada[i] == this.SacarBolilla())
+                
+                    return false;
+                }
+                
+                return true;
+        }
+
+        public long jugar(List<byte> Jugada, long cantSimu )
+        {
+            long cant = 0;
+            for (long i = 0; i < cantSimu; i++)
+            {
+                if (jugar(Jugada))
+                {
+                    cant++;
+                }
+                ReingresarBolilla();
+            }
+            return cant;
+        }
     }
-}
+ }
+
