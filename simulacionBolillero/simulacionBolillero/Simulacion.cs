@@ -12,6 +12,7 @@ namespace simulacionBolillero
         public Bolillero bolillero { get; set; }
         public byte CantidadSimulaciones { get; set; }
         public ulong CantidadAciertos { get; private set; }
+        public List<byte> Numero { get; set; }
         public Simulacion()
         {
 
@@ -46,18 +47,30 @@ namespace simulacionBolillero
 
         private ulong simularCon(Bolillero bolilleroClon, ulong cantidadPorHilo)
         {
-            throw new NotImplementedException();
+            ulong aciertos = 0;
+            for (ulong i = 0; i < CantidadSimulaciones; i++)
+            {
+                
+                bolillero.SacarBolilla();
+                if (bolillero.jugar(Numero))
+                {
+                    aciertos++;
+                }
+            }
+            return aciertos;
         }
-       
-
-      
-
-       
 
 
 
 
 
-        
+
+
+
+
+
+
+
+
     }
 }
