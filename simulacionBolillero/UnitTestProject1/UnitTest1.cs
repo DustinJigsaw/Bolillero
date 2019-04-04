@@ -8,14 +8,12 @@ namespace UnitTestProject1
     public class UnitTest1
     {
         Bolillero bolillero;
-        Simulacion simulacion;
+        
 
         [TestMethod]
         public void TestMethod1()
         {
-            bolillero = new Bolillero(10, 1);
-
-            simulacion = new Simulacion();
+            
            
            
         }
