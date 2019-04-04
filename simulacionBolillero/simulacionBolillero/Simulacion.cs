@@ -10,7 +10,8 @@ namespace simulacionBolillero
     class Simulacion
     {
         public Bolillero bolillero { get; set; }
-
+        public byte CantidadSimulaciones { get; set; }
+        public ulong CantidadAciertos { get; private set; }
         public Simulacion()
         {
 
@@ -21,6 +22,42 @@ namespace simulacionBolillero
           return bolillero.jugar(jugada, cantSimu);
         }
 
+       
+        public void simularConHilos(int cantidadHilos)
+        {
+            List<Task<ulong>> hilos = new List<Task<ulong>>();
+            List<Bolillero> Bolillero = new List<Bolillero>();
+            ulong cantidadPorHilo = this.CantidadSimulaciones / (ulong)cantidadHilos;
+            for (int i = 0; i < cantidadHilos; i++)
+            {
+                Bolillero bolilleroClon = (Bolillero)bolillero.Clone();
+                Task<ulong> tarea = new Task<ulong>(() => simularCon(bolilleroClon, cantidadPorHilo));
+                hilos.Add(tarea);
+            }
 
+            hilos.ForEach(hilo => hilo.Start());
+           
+            while (!hilos.TrueForAll(hilo => hilo.IsCompleted)) ;
+            
+            this.CantidadAciertos = 0;
+            
+            hilos.ForEach(hilo => CantidadAciertos += hilo.Result);
+        }
+
+        private ulong simularCon(Bolillero bolilleroClon, ulong cantidadPorHilo)
+        {
+            throw new NotImplementedException();
+        }
+       
+
+      
+
+       
+
+
+
+
+
+        
     }
 }

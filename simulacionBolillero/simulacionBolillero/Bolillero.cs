@@ -64,6 +64,15 @@ namespace simulacionBolillero
             }
             return cant;
         }
+
+        public object Clone()
+        {
+            Bolillero clon = new Bolillero();
+            clon.BollillasAdentro = new List<byte>(this.BollillasAdentro);
+            clon.BollillasAfuera = new List<byte>(this.BollillasAfuera);
+            return clon;
+
+        }
     }
  }
 
