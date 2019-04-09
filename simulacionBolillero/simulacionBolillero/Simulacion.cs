@@ -7,7 +7,7 @@ using simulacionBolillero;
 
 namespace simulacionBolillero
 {
-    class Simulacion
+    public class Simulacion
     {
         public Bolillero bolillero { get; set; }
         public byte CantidadSimulaciones { get; set; }
