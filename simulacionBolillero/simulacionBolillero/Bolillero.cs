@@ -10,12 +10,22 @@ namespace simulacionBolillero
     {
         public List<byte> BollillasAdentro { get; set; }
         public List<byte> BollillasAfuera { get; set; }
+        public List<byte> bolillas { get; set; }
 
         Random r;
+    
+
          public Bolillero()
         {
             r = new Random(DateTime.Now.Millisecond);
         }
+
+        public void agregarBolillas(Bolillero bolillero)
+         {
+             bolillas.Add(bolillero);
+         }
+    
+
         public int IndiceAlAzar()
         {
             return r.Next(1, this.BollillasAdentro.Count);

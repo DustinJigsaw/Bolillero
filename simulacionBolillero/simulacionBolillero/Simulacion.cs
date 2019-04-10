@@ -13,14 +13,17 @@ namespace simulacionBolillero
         public byte CantidadSimulaciones { get; set; }
         public ulong CantidadAciertos { get; private set; }
         public List<byte> Numero { get; set; }
+        public byte jugada { get; set; }
+        public ulong cantidadPorHilo { get; set; }
+       
         public Simulacion()
         {
 
         }
 
-        public long SimularSinHilos(List<byte> jugada, long cantSimu)
+        public void simularSinHilos()
         {
-          return bolillero.jugar(jugada, cantSimu);
+            this.CantidadAciertos = simularCon(bolillero, Numero, cantidadPorHilo, jugada, CantidadSimulaciones);
         }
 
        
@@ -32,7 +35,7 @@ namespace simulacionBolillero
             for (int i = 0; i < cantidadHilos; i++)
             {
                 Bolillero bolilleroClon = (Bolillero)bolillero.Clone();
-                Task<ulong> tarea = new Task<ulong>(() => simularCon(bolilleroClon, cantidadPorHilo));
+                Task<ulong> tarea = new Task<ulong>(() => simularCon(bolilleroClon, Numero, cantidadPorHilo, jugada, CantidadSimulaciones));
                 hilos.Add(tarea);
             }
 
@@ -45,12 +48,12 @@ namespace simulacionBolillero
             hilos.ForEach(hilo => CantidadAciertos += hilo.Result);
         }
 
-        private ulong simularCon(Bolillero bolilleroClon, ulong cantidadPorHilo)
+        private ulong simularCon(Bolillero bolilleroClon, List<byte> Numero, ulong cantidadPorHilo, byte jugada, object cantidadSimulaciones)
         {
             ulong aciertos = 0;
             for (ulong i = 0; i < CantidadSimulaciones; i++)
             {
-                
+
                 bolillero.SacarBolilla();
                 if (bolillero.jugar(Numero))
                 {
@@ -65,12 +68,7 @@ namespace simulacionBolillero
 
 
 
-
-
-
-
-
-
-
+        
     }
-}
+ }
+
