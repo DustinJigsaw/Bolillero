@@ -10,65 +10,52 @@ namespace simulacionBolillero
     public class Simulacion
     {
         public Bolillero bolillero { get; set; }
-        public byte CantidadSimulaciones { get; set; }
-        public ulong CantidadAciertos { get; private set; }
-        public List<byte> Numero { get; set; }
-        public byte jugada { get; set; }
-        public ulong cantidadPorHilo { get; set; }
-       
+        public byte cantidadSimulaciones { get; set; }
+        public long cantidadAciertos { get; private set; }
+
+
         public Simulacion()
         {
 
         }
-
-        public void simularSinHilos()
+        public long simularSinHilos(List<byte> jugada, long cantJugadas)
         {
-            this.CantidadAciertos = simularCon(bolillero, Numero, cantidadPorHilo, jugada, CantidadSimulaciones);
+            return bolillero.Jugar(jugada, cantJugadas);
         }
 
-       
-        public void simularConHilos(int cantidadHilos)
+        public long simularConHilos(List<byte> jugada, long cantJugada, int cantHilos)
         {
-            List<Task<ulong>> hilos = new List<Task<ulong>>();
-            List<Bolillero> Bolillero = new List<Bolillero>();
-            ulong cantidadPorHilo = this.CantidadSimulaciones / (ulong)cantidadHilos;
-            for (int i = 0; i < cantidadHilos; i++)
-            {
-                Bolillero bolilleroClon = (Bolillero)bolillero.Clone();
-                Task<ulong> tarea = new Task<ulong>(() => simularCon(bolilleroClon, Numero, cantidadPorHilo, jugada, CantidadSimulaciones));
-                hilos.Add(tarea);
-            }
+            var hilos = new List<Task<long>>();
+            var bolilleros = new List<Bolillero>();
+            long cantPorHilo = this.cantidadSimulaciones / (long)cantHilos;
+
+            asignarHilos(jugada, cantHilos, hilos, bolilleros, cantPorHilo);
 
             hilos.ForEach(hilo => hilo.Start());
-           
-            while (!hilos.TrueForAll(hilo => hilo.IsCompleted)) ;
-            
-            this.CantidadAciertos = 0;
-            
-            hilos.ForEach(hilo => CantidadAciertos += hilo.Result);
+
+            Task<long>.WaitAll(hilos.ToArray());
+
+            return hilos.Sum(task => task.Result);
         }
 
-        private ulong simularCon(Bolillero bolilleroClon, List<byte> Numero, ulong cantidadPorHilo, byte jugada, object cantidadSimulaciones)
+       private void asignarHilos(List<byte> jugada, int cantHilos, List<Task<long>> hilos, List<global::simulacionBolillero.Bolillero> bolilleros, long cantPorHilo)
         {
-            ulong aciertos = 0;
-            for (ulong i = 0; i < CantidadSimulaciones; i++)
+            for (int i = 0; i < cantHilos; i++)
             {
-
-                bolillero.SacarBolilla();
-                if (bolillero.jugar(Numero))
-                {
-                    aciertos++;
-                }
+                Bolillero bolilleroClon = (Bolillero)bolillero.Clone;
+                bolilleros.Add(bolilleroClon);
+                var tarea = new Task<long>(() => bolilleroClon.Jugar(jugada, cantPorHilo));
+                hilos.Add(tarea);
             }
-            return aciertos;
         }
 
 
-
-
-
-
-        
     }
- }
+}
 
+
+
+
+
+
+ 

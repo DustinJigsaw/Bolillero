@@ -6,83 +6,74 @@ using System.Threading.Tasks;
 
 namespace simulacionBolillero
 {
-    public class Bolillero
-    {
-        public List<byte> BollillasAdentro { get; set; }
-        public List<byte> BollillasAfuera { get; set; }
-        public List<byte> bolillas { get; set; }
+   public class Bolillero:ICloneable
+   {
+       Random r;
+       public int cantidadBolilla { get; set; }
+       public List<byte> bolillasAdentro { get; set; }
+       public List<byte> bolillasAfuera { get; set; }
 
-        Random r;
-    
+       public Bolillero()
+       {
+          
+           r = new Random(DateTime.Now.Millisecond);
+       }
 
-         public Bolillero()
-        {
-            r = new Random(DateTime.Now.Millisecond);
-        }
+       public int indiceAlAzar()
+       {
+           return r.Next(0, bolillasAdentro.Count);
+       }
+       public byte sacarBolilla()
+       {
+           byte bolilla = bolillasAdentro[indiceAlAzar()];
+           sacarBolilla(bolilla);
+           return bolilla;
+  
+       }
 
-        public void agregarBolillas(Bolillero bolillero)
-         {
-             bolillas.Add(bolillero);
-         }
-    
+       public void sacarBolilla(byte bolilla)
+       {
+           bolillasAdentro.Remove(sacarBolilla());
+           bolillasAfuera.Add(sacarBolilla());
+       }
 
-        public int IndiceAlAzar()
-        {
-            return r.Next(1, this.BollillasAdentro.Count);
-        }
+       public void regresarBolillas()
+       {
+           bolillasAdentro.AddRange(bolillasAfuera);
+       }
 
-        public byte SacarBolilla()
-        {
-            byte bolilla = BollillasAdentro[IndiceAlAzar()];
-            sacarBolilla(bolilla);
-            return bolilla;
-        }
-        
-        public void sacarBolilla(byte bolilla)
-        {
-            BollillasAdentro.Remove(SacarBolilla());
-            BollillasAfuera.Add(SacarBolilla());
-        }
+       public bool jugar(List<byte> jugada)
+       {
+           for(byte i = 0; i < jugada.Count; i++)
+           {
+               if(jugada[i] == this.sacarBolilla())
+                   return false;
+           }
+           return true;
 
-        public void ReingresarBolilla()
-        {
-            BollillasAdentro.AddRange(BollillasAfuera);
-        }
+       }
+       public long Jugar(List<byte> jugada, long cantSimu)
+       {
+           long cant = 0;
+           for(long i=0; i< cantSimu ; i++)
+           {
+               if(jugar(jugada))
+               {
+                   cant++;
+               }
+             regresarBolillas();
+           }
+           return cant;
+       }
 
-        public bool jugar(List<byte> jugada)
-        {
-            for (byte i=0; i<jugada.Count; i++)
-            {
-                if(jugada[i] == this.SacarBolilla())
-                
-                    return false;
-                }
-                
-                return true;
-        }
-
-        public long jugar(List<byte> Jugada, long cantSimu )
-        {
-            long cant = 0;
-            for (long i = 0; i < cantSimu; i++)
-            {
-                if (jugar(Jugada))
-                {
-                    cant++;
-                }
-                ReingresarBolilla();
-            }
-            return cant;
-        }
-
-        public object Clone()
-        {
-            Bolillero clon = new Bolillero();
-            clon.BollillasAdentro = new List<byte>(this.BollillasAdentro);
-            clon.BollillasAfuera = new List<byte>(this.BollillasAfuera);
-            return clon;
-
-        }
-    }
- }
+       public object Clone()
+       {
+           Bolillero clon = new Bolillero();
+           clon.bolillasAdentro = new List<byte>(this.bolillasAdentro);
+           clon.bolillasAfuera = new List<byte>(this.bolillasAfuera);
+           return clon;
+       }
+   }
+}
+ 
 

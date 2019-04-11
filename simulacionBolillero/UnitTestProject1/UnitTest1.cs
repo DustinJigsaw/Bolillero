@@ -18,11 +18,11 @@ namespace UnitTestProject1
 
             simulacion = new Simulacion();
             simulacion.bolillero = bolillero;
-            simulacion.CantidadSimulaciones = 10;
-            simulacion.simularSinHilos();
+            simulacion.cantidadSimulaciones = 10;
+            //simulacion.simularSinHilos();
           
 
-            Assert.AreEqual(10, (int)simulacion.CantidadAciertos);
+            Assert.AreEqual(10, (int)simulacion.cantidadAciertos);
            
         }
     }
