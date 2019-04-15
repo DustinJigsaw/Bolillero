@@ -17,6 +17,7 @@ namespace simulacionBolillero
        {
           
            r = new Random(DateTime.Now.Millisecond);
+           agregarBolilla(cantidadBolilla);
        }
 
        public int indiceAlAzar()
@@ -31,6 +32,13 @@ namespace simulacionBolillero
   
        }
 
+       private void agregarBolilla(int nro)
+       {
+           for (byte i = 1; i <= nro; i++)
+           {
+               bolillasAdentro.Add(i);
+           }
+       }
        public void sacarBolilla(byte bolilla)
        {
            bolillasAdentro.Remove(sacarBolilla());
