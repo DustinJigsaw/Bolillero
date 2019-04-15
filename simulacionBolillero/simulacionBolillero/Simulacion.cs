@@ -42,7 +42,7 @@ namespace simulacionBolillero
         {
             for (int i = 0; i < cantHilos; i++)
             {
-                Bolillero bolilleroClon = (Bolillero)bolillero.Clone;
+                Bolillero bolilleroClon = (Bolillero)bolillero.Clone();
                 bolilleros.Add(bolilleroClon);
                 var tarea = new Task<long>(() => bolilleroClon.Jugar(jugada, cantPorHilo));
                 hilos.Add(tarea);

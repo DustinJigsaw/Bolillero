@@ -73,6 +73,9 @@ namespace simulacionBolillero
            clon.bolillasAfuera = new List<byte>(this.bolillasAfuera);
            return clon;
        }
+
+      
+       
    }
 }
  
