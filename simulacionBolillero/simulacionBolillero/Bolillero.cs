@@ -13,11 +13,16 @@ namespace simulacionBolillero
        public List<byte> bolillasAdentro { get; set; }
        public List<byte> bolillasAfuera { get; set; }
 
+       public Bolillero(byte bolillas): this()
+       {
+           bolillasAdentro = new List<byte>();
+           bolillasAfuera = new List<byte>();
+           agregarBolilla(cantidadBolilla);
+       }
+
        public Bolillero()
        {
-          
            r = new Random(DateTime.Now.Millisecond);
-           agregarBolilla(cantidadBolilla);
        }
 
        public int indiceAlAzar()
@@ -26,10 +31,9 @@ namespace simulacionBolillero
        }
        public byte sacarBolilla()
        {
-           byte bolilla = bolillasAdentro[indiceAlAzar()];
+           byte bolilla = (byte)bolillasAdentro[indiceAlAzar()];
            sacarBolilla(bolilla);
-           return bolilla;
-  
+           return bolilla;  
        }
 
        private void agregarBolilla(int nro)
@@ -41,8 +45,8 @@ namespace simulacionBolillero
        }
        public void sacarBolilla(byte bolilla)
        {
-           bolillasAdentro.Remove(sacarBolilla());
-           bolillasAfuera.Add(sacarBolilla());
+           bolillasAdentro.Remove(bolilla);
+           bolillasAfuera.Add(bolilla);
        }
 
        public void regresarBolillas()
@@ -54,7 +58,7 @@ namespace simulacionBolillero
        {
            for(byte i = 0; i < jugada.Count; i++)
            {
-               if(jugada[i] == this.sacarBolilla())
+               if(jugada[i] != this.sacarBolilla())
                    return false;
            }
            return true;
@@ -65,11 +69,11 @@ namespace simulacionBolillero
            long cant = 0;
            for(long i=0; i< cantSimu ; i++)
            {
+               regresarBolillas();
                if(jugar(jugada))
                {
                    cant++;
-               }
-             regresarBolillas();
+               }             
            }
            return cant;
        }

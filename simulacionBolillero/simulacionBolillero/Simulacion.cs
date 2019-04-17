@@ -18,9 +18,9 @@ namespace simulacionBolillero
         {
 
         }
-        public long simularSinHilos(List<byte> jugada, long cantJugadas)
+        public void simularSinHilos(List<byte> jugada, long cantJugadas)
         {
-            return bolillero.Jugar(jugada, cantJugadas);
+            cantidadAciertos = bolillero.Jugar(jugada, cantJugadas);
         }
 
         public long simularConHilos(List<byte> jugada, long cantJugada, int cantHilos)
