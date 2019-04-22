@@ -9,16 +9,18 @@ namespace simulacionBolillero
    public class Bolillero:ICloneable
    {
        Random r;
-       public int cantidadBolilla { get; set; }
+       
        public List<byte> bolillasAdentro { get; set; }
        public List<byte> bolillasAfuera { get; set; }
 
-       public Bolillero(byte bolillas): this()
+       public Bolillero(int cantidadBolilla): this()
        {
            bolillasAdentro = new List<byte>();
            bolillasAfuera = new List<byte>();
            agregarBolilla(cantidadBolilla);
        }
+
+      
 
        public Bolillero()
        {
@@ -80,7 +82,7 @@ namespace simulacionBolillero
 
        public object Clone()
        {
-           Bolillero clon = new Bolillero();
+           Bolillero clon = new Bolillero(10);
            clon.bolillasAdentro = new List<byte>(this.bolillasAdentro);
            clon.bolillasAfuera = new List<byte>(this.bolillasAfuera);
            return clon;

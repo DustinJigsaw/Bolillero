@@ -14,21 +14,32 @@ namespace UnitTestProject1
        
 
         [TestMethod]
-        public void testSimulacion()
+        public void testSimulacionConHilos()
         {
-
-            
+            Bolillero bolillero = new Bolillero(1);
+            Simulacion simulacion = new Simulacion();
             var jugada = new List<byte>(){4, 6, 8};
-            simulacion = new Simulacion();
-            simulacion.bolillero = bolillero;
-            simulacion.cantidadSimulaciones = 255;
-           
-            simulacion.simularSinHilos(jugada, 1000);
-          
 
-            Assert.AreEqual(255, (int)simulacion.cantidadAciertos);
-           
+            simulacion.bolillero = bolillero;
+            simulacion.simularConHilos(jugada, 4, 4);
+
+            Assert.AreEqual(3, (int)simulacion.cantidadAciertos, 10);         
         }
+
+        [TestMethod]
+        public void testSimulacionSinHilos()
+        {
+            Bolillero bolillero = new Bolillero(1);
+            Simulacion simulacion = new Simulacion();
+            var jugada = new List<byte>() { 1 };
+
+            simulacion.bolillero = bolillero;
+            simulacion.simularSinHilos(jugada, 1000000);
+
+            Assert.AreEqual(1000000, (int)simulacion.cantidadAciertos); 
+            
+        }
+
 
        [TestMethod]
        public void TestBolillero()
@@ -37,6 +48,7 @@ namespace UnitTestProject1
             var jugada = new List<byte>() { 1 };
             Assert.IsTrue(bolillero.jugar(jugada));
             Assert.AreEqual(500, bolillero.Jugar(jugada, 500));
+            
         }
 
        

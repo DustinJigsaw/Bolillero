@@ -9,6 +9,7 @@ namespace simulacionBolillero
 {
     public class Simulacion
     {
+        
         public Bolillero bolillero { get; set; }
         public byte cantidadSimulaciones { get; set; }
         public long cantidadAciertos { get; private set; }
@@ -18,9 +19,9 @@ namespace simulacionBolillero
         {
 
         }
-        public void simularSinHilos(List<byte> jugada, long cantJugadas)
+        public void simularSinHilos(List<byte> jugada, long cantSimu)
         {
-            cantidadAciertos = bolillero.Jugar(jugada, cantJugadas);
+            cantidadAciertos = bolillero.Jugar(jugada, cantSimu);
         }
 
         public long simularConHilos(List<byte> jugada, long cantJugada, int cantHilos)
@@ -38,7 +39,7 @@ namespace simulacionBolillero
             return hilos.Sum(task => task.Result);
         }
 
-       private void asignarHilos(List<byte> jugada, int cantHilos, List<Task<long>> hilos, List<global::simulacionBolillero.Bolillero> bolilleros, long cantPorHilo)
+        private void asignarHilos(List<byte> jugada, int cantHilos, List<Task<long>> hilos, List<global::simulacionBolillero.Bolillero> bolilleros, long cantPorHilo)
         {
             for (int i = 0; i < cantHilos; i++)
             {
@@ -48,6 +49,8 @@ namespace simulacionBolillero
                 hilos.Add(tarea);
             }
         }
+
+
 
 
     }
